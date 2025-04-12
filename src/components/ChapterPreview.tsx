@@ -7,16 +7,25 @@ interface ChapterPreviewProps {
   title: string;
   summary: string;
   imageUrl?: string;
+  onClick?: () => void;
 }
 
-const ChapterPreview = ({ number, title, summary, imageUrl }: ChapterPreviewProps) => {
+const ChapterPreview = ({ number, title, summary, imageUrl, onClick }: ChapterPreviewProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  const handleClick = () => {
+    setIsExpanded(!isExpanded);
+    // If there's an external onClick handler, call it too
+    if (onClick) {
+      onClick();
+    }
+  };
   
   return (
     <div className="border border-border rounded-xl overflow-hidden mb-4 transition-all hover:shadow-md">
       <div 
         className="flex items-center justify-between p-4 cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleClick}
       >
         <div className="flex items-center gap-3">
           <span className="w-7 h-7 rounded-full bg-purple/10 text-purple flex items-center justify-center text-sm font-medium">
