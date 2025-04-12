@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookText, ImageIcon, Sparkles, Toggle } from 'lucide-react';
+import { BookText, ImageIcon, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   Select,
@@ -141,7 +140,7 @@ const BookCreationForm = () => {
           htmlFor="enable-images" 
           className="text-sm font-medium cursor-pointer flex items-center gap-2"
         >
-          <Toggle className="h-4 w-4 text-purple" />
+          <ImageIcon className="h-4 w-4 text-purple" />
           Enable Image Generation
         </label>
       </div>
