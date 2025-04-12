@@ -28,7 +28,7 @@ const GeneratingPage = () => {
           <div className="mt-6 space-y-4">
             <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
               <BookOpen className="h-6 w-6 text-purple animate-pulse" />
-              Creating Your Book
+              Your Book is Being Created...
             </h2>
             
             <div className="relative h-2 bg-purple/20 rounded-full overflow-hidden">
@@ -37,7 +37,7 @@ const GeneratingPage = () => {
             </div>
             
             <p className="text-muted-foreground">
-              Our AI is crafting your book chapters, characters, and narrative...
+              Hang tight — we're turning your idea into a beautiful book.
             </p>
             
             <div className="flex justify-center py-2">

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookText, ImageIcon, Sparkles } from 'lucide-react';
@@ -12,12 +13,18 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger 
+} from '@/components/ui/tooltip';
 
 const BookCreationForm = () => {
   const navigate = useNavigate();
   const [bookIdea, setBookIdea] = useState('');
-  const [genre, setGenre] = useState('');
-  const [imageStyle, setImageStyle] = useState('');
+  const [format, setFormat] = useState('');
+  const [pageSize, setPageSize] = useState('');
   const [enableImages, setEnableImages] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -25,17 +32,17 @@ const BookCreationForm = () => {
     e.preventDefault();
     
     if (!bookIdea.trim()) {
-      toast.error("Please enter your book idea");
+      toast.error("Please enter a prompt before generating your book");
       return;
     }
     
-    if (!genre) {
-      toast.error("Please select a genre");
+    if (!format) {
+      toast.error("Please select a file format");
       return;
     }
     
-    if (enableImages && !imageStyle) {
-      toast.error("Please select an image style or disable images");
+    if (!pageSize) {
+      toast.error("Please select a page size");
       return;
     }
     
@@ -44,8 +51,8 @@ const BookCreationForm = () => {
     // Store form data in session storage
     sessionStorage.setItem('bookDetails', JSON.stringify({
       bookIdea,
-      genre,
-      imageStyle,
+      format,
+      pageSize,
       enableImages
     }));
     
@@ -60,7 +67,7 @@ const BookCreationForm = () => {
       <div className="space-y-2">
         <label htmlFor="bookIdea" className="text-sm font-medium flex items-center gap-2">
           <BookText className="h-4 w-4 text-purple" />
-          Book Idea
+          What's your book about?
         </label>
         <Textarea
           id="bookIdea"
@@ -75,75 +82,92 @@ const BookCreationForm = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <label htmlFor="genre" className="text-sm font-medium flex items-center gap-2">
-            <BookText className="h-4 w-4 text-purple" />
-            Genre
-          </label>
-          <Select value={genre} onValueChange={setGenre}>
-            <SelectTrigger id="genre" className="input-field">
-              <SelectValue placeholder="Select a genre" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="fantasy">Fantasy</SelectItem>
-              <SelectItem value="sci-fi">Science Fiction</SelectItem>
-              <SelectItem value="mystery">Mystery</SelectItem>
-              <SelectItem value="romance">Romance</SelectItem>
-              <SelectItem value="thriller">Thriller</SelectItem>
-              <SelectItem value="horror">Horror</SelectItem>
-              <SelectItem value="historical">Historical Fiction</SelectItem>
-              <SelectItem value="young-adult">Young Adult</SelectItem>
-              <SelectItem value="children">Children's</SelectItem>
-              <SelectItem value="non-fiction">Non-Fiction</SelectItem>
-              <SelectItem value="biography">Biography</SelectItem>
-              <SelectItem value="poetry">Poetry</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <TooltipProvider>
+          <div className="space-y-2">
+            <label htmlFor="format" className="text-sm font-medium flex items-center gap-2">
+              <BookText className="h-4 w-4 text-purple" />
+              Choose a file format:
+            </label>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Select value={format} onValueChange={setFormat}>
+                    <SelectTrigger id="format" className="input-field">
+                      <SelectValue placeholder="Select a format" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pdf">PDF</SelectItem>
+                      <SelectItem value="epub">EPUB</SelectItem>
+                      <SelectItem value="docx">DOCX</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Pick your book's final file type. PDF works great for printing.</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
         
-        <div className={`space-y-2 ${!enableImages ? 'opacity-50' : ''}`}>
-          <label htmlFor="imageStyle" className="text-sm font-medium flex items-center gap-2">
-            <ImageIcon className="h-4 w-4 text-purple" />
-            Image Style
-          </label>
-          <Select 
-            value={imageStyle} 
-            onValueChange={setImageStyle}
-            disabled={!enableImages}
-          >
-            <SelectTrigger id="imageStyle" className="input-field">
-              <SelectValue placeholder="Select an image style" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="realistic">Realistic</SelectItem>
-              <SelectItem value="cartoon">Cartoon</SelectItem>
-              <SelectItem value="watercolor">Watercolor</SelectItem>
-              <SelectItem value="3d">3D Rendered</SelectItem>
-              <SelectItem value="minimalist">Minimalist</SelectItem>
-              <SelectItem value="fantasy">Fantasy</SelectItem>
-              <SelectItem value="comic">Comic Book</SelectItem>
-              <SelectItem value="sci-fi">Sci-Fi</SelectItem>
-              <SelectItem value="pixel-art">Pixel Art</SelectItem>
-              <SelectItem value="oil-painting">Oil Painting</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <TooltipProvider>
+          <div className="space-y-2">
+            <label htmlFor="pageSize" className="text-sm font-medium flex items-center gap-2">
+              <BookText className="h-4 w-4 text-purple" />
+              Select a page size:
+            </label>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <Select value={pageSize} onValueChange={setPageSize}>
+                    <SelectTrigger id="pageSize" className="input-field">
+                      <SelectValue placeholder="Select a size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="a4">A4</SelectItem>
+                      <SelectItem value="a5">A5</SelectItem>
+                      <SelectItem value="letter">Letter</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Select the page dimensions for your final book.</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       
-      <div className="flex items-center space-x-2 pt-2">
-        <Switch 
-          id="enable-images" 
-          checked={enableImages}
-          onCheckedChange={setEnableImages}
-        />
-        <label 
-          htmlFor="enable-images" 
-          className="text-sm font-medium cursor-pointer flex items-center gap-2"
-        >
-          <ImageIcon className="h-4 w-4 text-purple" />
-          Enable Image Generation
-        </label>
-      </div>
+      <p className="text-xs text-muted-foreground py-1">
+        Choose how your book will be exported and formatted.
+      </p>
+      
+      <TooltipProvider>
+        <div className="flex items-center space-x-2 pt-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center space-x-2">
+                <Switch 
+                  id="enable-images" 
+                  checked={enableImages}
+                  onCheckedChange={setEnableImages}
+                />
+                <label 
+                  htmlFor="enable-images" 
+                  className="text-sm font-medium cursor-pointer flex items-center gap-2"
+                >
+                  <ImageIcon className="h-4 w-4 text-purple" />
+                  Add images to your book?
+                </label>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Decide whether to add AI-generated images to your book.</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TooltipProvider>
       
       <div className="pt-6">
         <Button 
@@ -154,7 +178,7 @@ const BookCreationForm = () => {
           {isSubmitting ? (
             <span className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 animate-spin" />
-              Submitting...
+              Generating...
             </span>
           ) : (
             <span className="flex items-center gap-2">

@@ -103,7 +103,7 @@ const BookPreviewPage = () => {
       sessionStorage.setItem('generatedBook', JSON.stringify(updatedBook));
       
       setSaving(false);
-      toast.success("Changes saved successfully");
+      toast.success("Changes applied. Ready to download!");
     }, 800);
   };
   
@@ -114,6 +114,11 @@ const BookPreviewPage = () => {
     }
     navigate('/editor');
   };
+  
+  // Get format and size from session storage
+  const bookDetails = sessionStorage.getItem('bookDetails');
+  const format = bookDetails ? JSON.parse(bookDetails).format?.toUpperCase() || 'PDF' : 'PDF';
+  const pageSize = bookDetails ? JSON.parse(bookDetails).pageSize?.toUpperCase() || 'A4' : 'A4';
   
   if (!book) {
     return (
@@ -135,9 +140,9 @@ const BookPreviewPage = () => {
       <main className="flex-grow py-12">
         <div className="container px-4 md:px-6">
           <div className="text-center mb-6 animate-fade-in">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">{book.title}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">Book Preview</h1>
             <p className="text-muted-foreground">
-              Preview your generated book and make final adjustments before downloading.
+              Here's how your book will look in {format} and {pageSize}.
             </p>
           </div>
           
@@ -157,7 +162,7 @@ const BookPreviewPage = () => {
               className="flex items-center gap-2"
             >
               <ChevronLeft className="h-4 w-4" />
-              Return to Book Editor
+              Back to Download Page
             </Button>
             
             <Button 
@@ -165,7 +170,7 @@ const BookPreviewPage = () => {
               onClick={handleDownload}
             >
               <Download className="h-4 w-4" />
-              Download as PDF
+              Download in {format}
             </Button>
           </div>
           
@@ -177,7 +182,7 @@ const BookPreviewPage = () => {
           >
             <CollapsibleContent className="bg-accent/30 rounded-xl p-6 space-y-6 animate-accordion-down">
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Quick Edits</h2>
+                <h2 className="text-xl font-semibold">Edit This Book</h2>
                 
                 <div>
                   <label htmlFor="book-title-edit" className="block text-sm font-medium mb-1">
@@ -193,7 +198,7 @@ const BookPreviewPage = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Chapter Quick Edit</h3>
+                  <h3 className="text-sm font-medium mb-2">Edit Table of Contents</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {book.chapters.map(chapter => (
                       <div 
@@ -219,11 +224,11 @@ const BookPreviewPage = () => {
                       const updatedBook = {...book, title: editingTitle};
                       setBook(updatedBook);
                       sessionStorage.setItem('generatedBook', JSON.stringify(updatedBook));
-                      toast.success("Title updated successfully");
+                      toast.success("Book title updated!");
                     }}
                   >
                     <Save className="h-4 w-4 mr-2" />
-                    Save Changes
+                    Save Book Changes
                   </Button>
                 </div>
               </div>
@@ -240,7 +245,7 @@ const BookPreviewPage = () => {
                   onClick={handleDownload}
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Download as PDF
+                  Download in {format}
                 </Button>
               </div>
               
@@ -390,7 +395,7 @@ const BookPreviewPage = () => {
                   value={editingChapter.content}
                   onChange={e => setEditingChapter({...editingChapter, content: e.target.value})}
                   className="w-full min-h-[300px]"
-                  placeholder="Enter chapter content"
+                  placeholder="Edit chapter content here..."
                 />
               </div>
             </div>
