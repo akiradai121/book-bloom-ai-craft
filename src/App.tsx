@@ -8,7 +8,6 @@ import LandingPage from "./pages/LandingPage";
 import CreateBookPage from "./pages/CreateBookPage";
 import GeneratingPage from "./pages/GeneratingPage";
 import BookPreviewPage from "./pages/BookPreviewPage";
-import BookEditorPage from "./pages/BookEditorPage";
 import SuccessPage from "./pages/SuccessPage";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
@@ -25,7 +24,6 @@ const App = () => (
           <Route path="/" element={<LandingPage />} />
           <Route path="/create" element={<CreateBookPage />} />
           <Route path="/generating" element={<GeneratingPage />} />
-          <Route path="/editor" element={<BookEditorPage />} />
           <Route path="/preview" element={<BookPreviewPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/login" element={<AuthPage />} />

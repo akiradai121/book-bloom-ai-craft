@@ -40,8 +40,15 @@ const BookPreviewPage = () => {
   useEffect(() => {
     // Retrieve stored book
     const storedBook = sessionStorage.getItem('generatedBook');
+    
     if (!storedBook) {
-      navigate('/create');
+      // Instead of redirecting to /create, generate a sample book
+      const sampleBook = generateSampleBook();
+      setBook(sampleBook);
+      setEditingTitle(sampleBook.title);
+      
+      // Store the sample book
+      sessionStorage.setItem('generatedBook', JSON.stringify(sampleBook));
       return;
     }
     
@@ -51,6 +58,44 @@ const BookPreviewPage = () => {
     // Initialize editing state
     setEditingTitle(parsedBook.title);
   }, [navigate]);
+  
+  // New function to generate a sample book if none exists
+  const generateSampleBook = (): Book => {
+    const sampleChapters = Array.from({ length: 5 }, (_, i) => ({
+      id: i + 1,
+      title: `Chapter ${i + 1}: ${getSampleChapterTitle(i)}`,
+      content: getSampleChapterContent(),
+      summary: `A brief summary of chapter ${i + 1}`,
+      imageUrl: `https://source.unsplash.com/random/300x200?book&sig=${i}`
+    }));
+    
+    return {
+      title: "Your Amazing Book",
+      genre: "Fiction",
+      chapters: sampleChapters
+    };
+  };
+  
+  // Sample chapter title generator
+  const getSampleChapterTitle = (index: number) => {
+    const titles = [
+      "The Beginning",
+      "Unexpected Encounters",
+      "Revelations",
+      "The Challenge",
+      "A New Direction"
+    ];
+    return titles[index % titles.length];
+  };
+  
+  // Sample chapter content generator
+  const getSampleChapterContent = () => {
+    return `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.`;
+  };
   
   const handleDownload = () => {
     // Store book data for the success page
@@ -118,11 +163,8 @@ const BookPreviewPage = () => {
   };
   
   const returnToEditor = () => {
-    // Update the session storage with latest changes
-    if (book) {
-      sessionStorage.setItem('generatedBook', JSON.stringify(book));
-    }
-    navigate('/editor');
+    // Redirect to create page instead of editor
+    navigate('/create');
   };
   
   // Get format and size from session storage
@@ -172,7 +214,7 @@ const BookPreviewPage = () => {
               className="flex items-center gap-2"
             >
               <ChevronLeft className="h-4 w-4" />
-              Back to Download Page
+              Back to Create Page
             </Button>
             
             <Button 

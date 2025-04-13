@@ -11,7 +11,8 @@ const GeneratingPage = () => {
   useEffect(() => {
     // Simulate book generation time
     const timer = setTimeout(() => {
-      navigate('/editor');
+      // Changed from '/editor' to '/preview'
+      navigate('/preview');
     }, 5000);
     
     return () => clearTimeout(timer);
