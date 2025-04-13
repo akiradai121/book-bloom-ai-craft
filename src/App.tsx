@@ -11,6 +11,7 @@ import BookPreviewPage from "./pages/BookPreviewPage";
 import SuccessPage from "./pages/SuccessPage";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
+import PricingPage from "./pages/PricingPage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/preview" element={<BookPreviewPage />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/login" element={<AuthPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

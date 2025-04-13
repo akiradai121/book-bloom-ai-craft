@@ -22,6 +22,9 @@ const Navigation = () => {
         <Link to="/create" className="font-medium hover:text-purple transition-colors">
           Create
         </Link>
+        <Link to="/pricing" className="font-medium hover:text-purple transition-colors">
+          Pricing
+        </Link>
         <Link to="/about" className="font-medium hover:text-purple transition-colors">
           About
         </Link>
@@ -54,6 +57,9 @@ const Navigation = () => {
             </Link>
             <Link to="/create" className="font-medium hover:text-purple transition-colors">
               Create
+            </Link>
+            <Link to="/pricing" className="font-medium hover:text-purple transition-colors">
+              Pricing
             </Link>
             <Link to="/about" className="font-medium hover:text-purple transition-colors">
               About
